@@ -1,9 +1,11 @@
 import React from "react";
+import "./footer.css";
 
 const Footer = () => {
   return (
     <div className="footer">
-      <h1>footer</h1>
+      <p>© 2020 Homestay clone! No rights reserved - this is a demo!</p>
+      <p>Privacy · Terms · Sitemap · Company Details</p>
     </div>
   );
 };
