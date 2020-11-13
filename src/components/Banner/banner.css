@@ -1,0 +1,41 @@
+.banner {
+  height: 50vh;
+  background: url("https://cdn.decorilla.com/online-decorating/wp-content/uploads/2015/11/warm-wood-winter-interior-design-trends.jpg") center center;
+  position: relative;
+}
+
+.banner-search {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.banner-search-button {
+  background-color: white !important;
+  font-weight: 900 !important;
+  text-transform: inherit !important;
+  color: #ff7779 !important;
+}
+
+.banner-info {
+  background-color: black;
+  color: white;
+  padding: 25vh 50px 40px 50px;
+  width: 300px;
+}
+
+.banner-info button {
+  background-color: #ff7779;
+  color: white;
+  text-transform: inherit;
+}
+
+.banner-info button:hover {
+  background-color: white;
+  color: #ff7779;
+}
+/*# sourceMappingURL=banner.css.map */
