@@ -18,7 +18,7 @@
   background-color: white !important;
   font-weight: 900 !important;
   text-transform: inherit !important;
-  color: #ff7779 !important;
+  color: #0e4d89 !important;
 }
 
 .banner-info {
@@ -29,13 +29,14 @@
 }
 
 .banner-info button {
-  background-color: #ff7779;
+  background-color: #0e4d89;
   color: white;
   text-transform: inherit;
+  font-weight: 600;
 }
 
 .banner-info button:hover {
   background-color: white;
-  color: #ff7779;
+  color: #0e4d89;
 }
 /*# sourceMappingURL=banner.css.map */

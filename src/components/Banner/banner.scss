@@ -1,3 +1,5 @@
+@import "../../global-styles/colors";
+
 .banner {
   height: 50vh;
   background: url("https://cdn.decorilla.com/online-decorating/wp-content/uploads/2015/11/warm-wood-winter-interior-design-trends.jpg")
@@ -12,7 +14,7 @@
   background-color: white !important;
   font-weight: 900 !important;
   text-transform: inherit !important;
-  color: #ff7779 !important;
+  color: $dark-blue !important;
 }
 
 .banner-info {
@@ -22,12 +24,13 @@
   width: 300px;
 
   button {
-    background-color: #ff7779;
+    background-color: $dark-blue;
     color: white;
     text-transform: inherit;
+    font-weight: 600;
   }
   button:hover {
     background-color: white;
-    color: #ff7779;
+    color: $dark-blue;
   }
 }
