@@ -1,8 +1,6 @@
 import React from "react";
-import Banner from "../components/Banner/Banner";
-import ContentCard from "../components/ContentCard/ContentCard";
-import Footer from "../components/Footer/Footer";
-import Header from "../components/Header/Header";
+import Banner from "../../components/Banner/Banner";
+import ContentCard from "../../components/ContentCard/ContentCard";
 import "./home.css";
 
 const Home = () => {

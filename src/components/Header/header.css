@@ -33,9 +33,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  max-width: -webkit-fit-content;
-  max-width: -moz-fit-content;
-  max-width: fit-content;
   height: 30px;
   padding: 10px;
   border: 1px solid lightgray;
@@ -46,6 +43,7 @@
   border: none;
   padding: 10px;
   outline-width: 0;
+  width: 100%;
 }
 
 .header-right {
@@ -55,5 +53,6 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  padding-left: 10px;
 }
 /*# sourceMappingURL=header.css.map */

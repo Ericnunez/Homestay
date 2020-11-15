@@ -17,7 +17,7 @@
   display: flex;
   flex: 1;
   align-items: center;
-  max-width: fit-content;
+  // max-width: fit-content;
   height: 30px;
   padding: 10px;
   border: 1px solid lightgray;
@@ -26,10 +26,11 @@
     border: none;
     padding: 10px;
     outline-width: 0;
-    // width: 200px;
+    width: 100%;
   }
 }
 .header-right {
   display: flex;
   align-items: center;
+  padding-left: 10px;
 }
