@@ -6,9 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import userRoutes from "./routes/users.js";
-import listingRoutes from "./routes/listings.js";
-import auth from "./routes/auth.js";
+import api from "./api.js";
 
 const app = express();
 
@@ -16,9 +14,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 
-app.use("/users", userRoutes);
-app.use("/listings", listingRoutes);
-app.use("/auth", auth);
+app.use("/api/v1", api);
 
 const CONNECTION_URL = process.env.DB_STRING;
 
