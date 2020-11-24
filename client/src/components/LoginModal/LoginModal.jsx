@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+// import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { login, register } from "../../store/actions/auth.js";
 import { useDispatch } from "react-redux";
@@ -46,7 +46,6 @@ export default function LoginModal(props) {
 
     const errors = {};
     for (let item of error.details) errors[item.path[0]] = item.message;
-    // console.log("errors validate", errors);
     return errors;
   };
 
@@ -79,17 +78,19 @@ export default function LoginModal(props) {
               To subscribe to this website, please enter your email address
               here. We will send updates occasionally.
             </DialogContentText> */}
-            <TextField
-              onChange={(event) => setDisplayName(event.target.value)}
-              autoFocus
-              margin="dense"
-              id="displayName"
-              label="Name"
-              type="text"
-              fullWidth
-              error={errors.displayName ? true : false}
-              helperText={errors.displayName}
-            />
+            {props.modalversion === "register" && (
+              <TextField
+                onChange={(event) => setDisplayName(event.target.value)}
+                autoFocus
+                margin="dense"
+                id="displayName"
+                label="Name"
+                type="text"
+                fullWidth
+                error={errors.displayName ? true : false}
+                helperText={errors.displayName}
+              />
+            )}
             <TextField
               onChange={(event) => setEmail(event.target.email)}
               autoFocus
@@ -97,14 +98,13 @@ export default function LoginModal(props) {
               id="email"
               label="Email Address"
               type="email"
-              autoComplete="username"
+              autoComplete="email"
               fullWidth
               error={errors.email ? true : false}
               helperText={errors.email}
             />
             <TextField
               onChange={(event) => setPassword(event.target.value)}
-              autoFocus
               margin="dense"
               id="password"
               label="Password"

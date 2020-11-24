@@ -11,8 +11,10 @@ import { useSelector } from "react-redux";
 const Header = (props) => {
   const user = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [modalVersion, setModalVersion] = useState("");
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (version) => {
+    setModalVersion(version);
     setOpen(true);
   };
 
@@ -22,7 +24,11 @@ const Header = (props) => {
 
   return (
     <header className="header">
-      <LoginModal open={open} onClose={handleClose} />
+      <LoginModal
+        open={open}
+        onClose={handleClose}
+        modalversion={modalVersion}
+      />
       <Link to="/">
         <img className="header-icon" src={logo} alt="logo" />
       </Link>
@@ -35,17 +41,28 @@ const Header = (props) => {
           {user ? (
             <li>Sign Out</li>
           ) : (
-            <li
-              className="login-button"
-              onClick={() => {
-                handleClickOpen();
-              }}
-            >
-              Login
-            </li>
+            <React.Fragment>
+              {" "}
+              <li
+                className="login-button"
+                onClick={() => {
+                  handleClickOpen("login");
+                }}
+              >
+                Login
+              </li>
+              <li
+                className="login-button"
+                onClick={() => {
+                  handleClickOpen("register");
+                }}
+              >
+                Register
+              </li>
+            </React.Fragment>
           )}
         </ul>
-        <Language />
+        {/* <Language /> */}
         <ExpandMore />
         <Avatar />
       </div>
