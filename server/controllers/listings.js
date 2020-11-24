@@ -72,6 +72,7 @@ export const updateListing = async (req, res) => {
   };
   try {
     await Listing.findByIdAndUpdate(id, updatedListing, { new: true });
+    res.status(200).json(updatedListing);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }

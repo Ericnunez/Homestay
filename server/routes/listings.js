@@ -10,8 +10,8 @@ import {
 
 const router = express.Router();
 
-router.get("/", getListings);
-router.get("/:id", getListing);
+router.get("/", verifyToken, getListings);
+router.get("/:id", verifyToken, getListing);
 router.post("/", verifyToken, createListing);
 router.patch("/:id", verifyToken, updateListing);
 router.delete("/:id", verifyToken, deleteListing);

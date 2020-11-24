@@ -31,7 +31,15 @@ export const createUser = async (req, res) => {
       password: hashPassword,
     });
     await newUser.save();
-    res.status(201).json(newUser);
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        displayName: user.displayName,
+        email: user.email,
+      },
+      process.env.SECRET_TOKEN
+    );
+    res.status(201).json(token);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
@@ -64,10 +72,11 @@ export const loginUser = async (req, res) => {
       },
       process.env.SECRET_TOKEN
     );
-    return res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .send();
+    // const { _id: userId, displayName: name, email: email } = user;
+    return res.send(token);
+
+    // .header("x-auth-token", token)
+    // .header("access-control-expose-headers", "x-auth-token")
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
