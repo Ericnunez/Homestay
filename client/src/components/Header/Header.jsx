@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import "./header.css";
+import LoginModal from "../LoginModal/LoginModal";
 import logo from "../../images/logo.png";
+import "./header.css";
 import SearchIcon from "@material-ui/icons/Search";
 import { Avatar } from "@material-ui/core";
 import { ExpandMore, Language } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useStateValue } from "../../StateProvider";
-import LoginModal from "../LoginModal/LoginModal";
+import { useSelector } from "react-redux";
 
 const Header = (props) => {
-  const [{ user }, dispatch] = useStateValue();
+  const user = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -21,7 +21,7 @@ const Header = (props) => {
   };
 
   return (
-    <div className="header">
+    <header className="header">
       <LoginModal open={open} onClose={handleClose} />
       <Link to="/">
         <img className="header-icon" src={logo} alt="logo" />
@@ -31,22 +31,25 @@ const Header = (props) => {
         <SearchIcon />
       </div>
       <div className="header-right">
-        {user ? (
-          user
-        ) : (
-          <p
-            onClick={() => {
-              handleClickOpen();
-            }}
-          >
-            Login / Register
-          </p>
-        )}
+        <ul>
+          {user ? (
+            <li>Sign Out</li>
+          ) : (
+            <li
+              className="login-button"
+              onClick={() => {
+                handleClickOpen();
+              }}
+            >
+              Login
+            </li>
+          )}
+        </ul>
         <Language />
         <ExpandMore />
         <Avatar />
       </div>
-    </div>
+    </header>
   );
 };
 
