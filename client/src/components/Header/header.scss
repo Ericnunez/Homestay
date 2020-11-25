@@ -7,9 +7,17 @@
   z-index: 10;
   background-color: white;
   width: 100%;
+  // padding: 0.5rem;
   ul {
     list-style-type: none;
     padding: 0.5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    li {
+      padding: 0.5rem;
+    }
   }
 }
 .header-icon {
@@ -36,8 +44,11 @@
 .header-right {
   display: flex;
   align-items: center;
-  padding-left: 10px;
+  padding-left: 0.5rem;
 }
 .login-button {
+  cursor: pointer;
+}
+.signout-button {
   cursor: pointer;
 }

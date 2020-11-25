@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { login, register } from "../../store/actions/auth.js";
+import * as api from "../../api";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { login, register } from "../../store/actions/auth.js";
+import { Alert } from "@material-ui/lab";
 import { useDispatch } from "react-redux";
 import Joi from "joi-browser";
 
@@ -18,25 +19,37 @@ export default function LoginModal(props) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const errors = validate(loginSchema, { email, password });
     if (errors) {
       setErrors(errors);
       return;
     }
-    dispatch(login({ email, password }));
-    props.onClose();
+    try {
+      const { data } = await api.login({ email, password });
+      console.log(data);
+      dispatch(login(data));
+      props.onClose();
+    } catch (error) {
+      setErrors({ api: error.response.data.message });
+    }
   };
 
-  const handleSubmit = (e) => {
-    const errors = validate(registerSchema, { email, password });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errors = validate(registerSchema, { email, password, displayName });
     if (errors) {
       setErrors(errors);
       return;
     }
-    e.preventDefault();
-    dispatch(register({ displayName, email, password }));
+    try {
+      const { data } = await api.register({ displayName, email, password });
+      dispatch(register(data));
+      props.onClose();
+    } catch (error) {
+      setErrors({ api: error.response.data.message });
+    }
   };
 
   const validate = (schema, userDetails) => {
@@ -46,15 +59,17 @@ export default function LoginModal(props) {
 
     const errors = {};
     for (let item of error.details) errors[item.path[0]] = item.message;
-    // console.log("errors validate", errors);
     return errors;
   };
 
   const loginSchema = {
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    }),
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .required()
+      .label("Email"),
     password: Joi.string().min(5).max(20).required().label("Password"),
   };
 
@@ -75,36 +90,34 @@ export default function LoginModal(props) {
         <form>
           <DialogTitle id="form-dialog-title">Login</DialogTitle>
           <DialogContent>
-            {/* <DialogContentText>
-              To subscribe to this website, please enter your email address
-              here. We will send updates occasionally.
-            </DialogContentText> */}
+            {errors.api && <Alert severity="error">{errors.api}</Alert>}
+            {props.modalversion === "register" && (
+              <TextField
+                onChange={(event) => setDisplayName(event.target.value)}
+                autoFocus
+                margin="dense"
+                id="displayName"
+                label="Name"
+                type="text"
+                fullWidth
+                error={errors.displayName ? true : false}
+                helperText={errors.displayName}
+              />
+            )}
             <TextField
-              onChange={(event) => setDisplayName(event.target.value)}
-              autoFocus
-              margin="dense"
-              id="displayName"
-              label="Name"
-              type="text"
-              fullWidth
-              error={errors.displayName ? true : false}
-              helperText={errors.displayName}
-            />
-            <TextField
-              onChange={(event) => setEmail(event.target.email)}
+              onChange={(event) => setEmail(event.target.value)}
               autoFocus
               margin="dense"
               id="email"
               label="Email Address"
               type="email"
-              autoComplete="username"
+              autoComplete="email"
               fullWidth
               error={errors.email ? true : false}
               helperText={errors.email}
             />
             <TextField
               onChange={(event) => setPassword(event.target.value)}
-              autoFocus
               margin="dense"
               id="password"
               label="Password"
@@ -125,22 +138,29 @@ export default function LoginModal(props) {
             >
               Cancel
             </Button>
-            <Button
-              onClick={(e) => {
-                handleLogin(e);
-              }}
-              color="primary"
-            >
-              Login
-            </Button>
-            <Button
-              onClick={(e) => {
-                handleSubmit(e);
-              }}
-              color="primary"
-            >
-              Register
-            </Button>
+
+            {props.modalversion === "login" && (
+              <Button
+                type="submit"
+                onClick={(e) => {
+                  handleLogin(e);
+                }}
+                color="primary"
+              >
+                Login
+              </Button>
+            )}
+            {props.modalversion === "register" && (
+              <Button
+                type="submit"
+                onClick={(e) => {
+                  handleSubmit(e);
+                }}
+                color="primary"
+              >
+                Register
+              </Button>
+            )}
           </DialogActions>
         </form>
       </Dialog>

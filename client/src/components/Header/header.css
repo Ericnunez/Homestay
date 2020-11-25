@@ -19,6 +19,18 @@
 .header ul {
   list-style-type: none;
   padding: 0.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header ul li {
+  padding: 0.5rem;
 }
 
 .header-icon {
@@ -58,10 +70,14 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding-left: 10px;
+  padding-left: 0.5rem;
 }
 
 .login-button {
+  cursor: pointer;
+}
+
+.signout-button {
   cursor: pointer;
 }
 /*# sourceMappingURL=header.css.map */
