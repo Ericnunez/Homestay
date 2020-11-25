@@ -26,6 +26,7 @@ export const register = (user) => {
 export const login = (user) => {
   return axios({
     method: "post",
+    headers: { "Content-type": "application/json" },
     url: `${url}${loginUrl}`,
     data: user,
   });

@@ -1,9 +1,10 @@
 import {
   CREATE,
   UPDATE,
-  DELETE,
   LOGIN,
   REGISTER,
+  SIGN_OUT,
+  SET_USER,
 } from "../constants/actionTypes";
 
 export default (state = null, action) => {
@@ -12,6 +13,10 @@ export default (state = null, action) => {
       return action.payload;
     case REGISTER:
       return [...state, action.payload];
+    case SIGN_OUT:
+      return action.payload;
+    case SET_USER:
+      return action.payload;
     default:
       return state;
   }

@@ -4,6 +4,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import SearchPage from "./views/Search/SearchPage";
 import NotFound from "./views/NotFound/NotFound";
+import { setUser } from "./store/actions/auth.js";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -11,7 +12,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getListings());
+    dispatch(setUser());
   }, [dispatch]);
 
   return (

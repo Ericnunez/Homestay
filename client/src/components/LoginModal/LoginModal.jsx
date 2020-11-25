@@ -30,7 +30,7 @@ export default function LoginModal(props) {
   };
 
   const handleSubmit = (e) => {
-    const errors = validate(registerSchema, { email, password });
+    const errors = validate(registerSchema, { email, password, displayName });
     if (errors) {
       setErrors(errors);
       return;
@@ -50,10 +50,13 @@ export default function LoginModal(props) {
   };
 
   const loginSchema = {
-    email: Joi.string().email({
-      minDomainSegments: 2,
-      tlds: { allow: ["com", "net"] },
-    }),
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .required()
+      .label("Email"),
     password: Joi.string().min(5).max(20).required().label("Password"),
   };
 
@@ -92,7 +95,7 @@ export default function LoginModal(props) {
               />
             )}
             <TextField
-              onChange={(event) => setEmail(event.target.email)}
+              onChange={(event) => setEmail(event.target.value)}
               autoFocus
               margin="dense"
               id="email"
@@ -125,22 +128,29 @@ export default function LoginModal(props) {
             >
               Cancel
             </Button>
-            <Button
-              onClick={(e) => {
-                handleLogin(e);
-              }}
-              color="primary"
-            >
-              Login
-            </Button>
-            <Button
-              onClick={(e) => {
-                handleSubmit(e);
-              }}
-              color="primary"
-            >
-              Register
-            </Button>
+
+            {props.modalversion === "login" && (
+              <Button
+                type="submit"
+                onClick={(e) => {
+                  handleLogin(e);
+                }}
+                color="primary"
+              >
+                Login
+              </Button>
+            )}
+            {props.modalversion === "register" && (
+              <Button
+                type="submit"
+                onClick={(e) => {
+                  handleSubmit(e);
+                }}
+                color="primary"
+              >
+                Register
+              </Button>
+            )}
           </DialogActions>
         </form>
       </Dialog>
