@@ -9,12 +9,14 @@ import {
 
 import * as api from "../../api";
 
+import jwt_decode from "jwt-decode";
+
 export const login = (user) => async (dispatch) => {
   try {
     const { data } = await api.login(user);
-    console.log(data);
     localStorage.setItem("token", data);
-    dispatch({ type: LOGIN, payload: data });
+    const decodedToken = jwt_decode(data);
+    dispatch({ type: LOGIN, payload: decodedToken });
   } catch (error) {
     console.log(error.message);
   }
@@ -36,9 +38,10 @@ export const signOut = () => (dispatch) => {
 };
 
 export const setUser = () => (dispatch) => {
-  let token = null;
-  if (localStorage.key("token")) {
-    token = localStorage.getItem("token");
+  const storedToken = localStorage.getItem("token");
+  let decodedToken = null;
+  if (storedToken) {
+    decodedToken = jwt_decode(storedToken);
   }
-  dispatch({ type: SET_USER, payload: token });
+  dispatch({ type: SET_USER, payload: decodedToken });
 };
