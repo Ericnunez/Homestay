@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { login, register } from "../../store/actions/auth.js";
+import * as api from "../../api";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-// import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { login, register } from "../../store/actions/auth.js";
+import { Alert } from "@material-ui/lab";
 import { useDispatch } from "react-redux";
 import Joi from "joi-browser";
 
@@ -18,25 +19,37 @@ export default function LoginModal(props) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const errors = validate(loginSchema, { email, password });
     if (errors) {
       setErrors(errors);
       return;
     }
-    dispatch(login({ email, password }));
-    props.onClose();
+    try {
+      const { data } = await api.login({ email, password });
+      console.log(data);
+      dispatch(login(data));
+      props.onClose();
+    } catch (error) {
+      setErrors({ api: error.response.data.message });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const errors = validate(registerSchema, { email, password, displayName });
     if (errors) {
       setErrors(errors);
       return;
     }
-    e.preventDefault();
-    dispatch(register({ displayName, email, password }));
+    try {
+      const { data } = await api.register({ displayName, email, password });
+      dispatch(register(data));
+      props.onClose();
+    } catch (error) {
+      setErrors({ api: error.response.data.message });
+    }
   };
 
   const validate = (schema, userDetails) => {
@@ -77,10 +90,7 @@ export default function LoginModal(props) {
         <form>
           <DialogTitle id="form-dialog-title">Login</DialogTitle>
           <DialogContent>
-            {/* <DialogContentText>
-              To subscribe to this website, please enter your email address
-              here. We will send updates occasionally.
-            </DialogContentText> */}
+            {errors.api && <Alert severity="error">{errors.api}</Alert>}
             {props.modalversion === "register" && (
               <TextField
                 onChange={(event) => setDisplayName(event.target.value)}

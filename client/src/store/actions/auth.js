@@ -11,9 +11,8 @@ import * as api from "../../api";
 
 import jwt_decode from "jwt-decode";
 
-export const login = (user) => async (dispatch) => {
+export const login = (data) => async (dispatch) => {
   try {
-    const { data } = await api.login(user);
     localStorage.setItem("token", data);
     const decodedToken = jwt_decode(data);
     dispatch({ type: LOGIN, payload: decodedToken });
@@ -22,13 +21,13 @@ export const login = (user) => async (dispatch) => {
   }
 };
 
-export const register = (user) => async (dispatch) => {
+export const register = (data) => async (dispatch) => {
   try {
-    const { data } = await api.register(user);
-
-    dispatch({ type: REGISTER, payload: data });
+    localStorage.setItem("token", data);
+    const decodedToken = jwt_decode(data);
+    dispatch({ type: SET_USER, payload: decodedToken });
   } catch (error) {
-    console.log(error.message, error);
+    console.log(error.message);
   }
 };
 
@@ -40,8 +39,12 @@ export const signOut = () => (dispatch) => {
 export const setUser = () => (dispatch) => {
   const storedToken = localStorage.getItem("token");
   let decodedToken = null;
-  if (storedToken) {
-    decodedToken = jwt_decode(storedToken);
+  try {
+    if (storedToken) {
+      decodedToken = jwt_decode(storedToken);
+    }
+  } catch (error) {
+    console.log(error);
   }
   dispatch({ type: SET_USER, payload: decodedToken });
 };

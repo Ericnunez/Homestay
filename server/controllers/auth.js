@@ -55,7 +55,9 @@ export const loginUser = async (req, res) => {
     if (!user)
       return res
         .status(400)
-        .send(`There is no user with the email ${req.body.email} `);
+        .send({
+          message: `There is no user with the email ${req.body.email} `,
+        });
 
     const validPassword = await bcrypt.compare(
       req.body.password,
