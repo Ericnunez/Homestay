@@ -1,9 +1,14 @@
 import React from "react";
+import { useEffect } from "react";
 import Banner from "../../components/Banner/Banner";
 import ContentCard from "../../components/ContentCard/ContentCard";
 import "./home.css";
 
 const Home = () => {
+  useEffect(() => {
+    document.title = `${window.documentTitle}`;
+  }, []);
+
   return (
     <div className="home">
       <Banner />

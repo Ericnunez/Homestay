@@ -1,0 +1,17 @@
+.profile-grid {
+  display: -ms-grid;
+  display: grid;
+  gap: 2rem;
+}
+
+@media only screen and (min-width: 700px) {
+  .profile-grid {
+    -ms-grid-columns: 1fr 2fr;
+        grid-template-columns: 1fr 2fr;
+  }
+}
+
+.profile-left {
+  padding: 1rem;
+}
+/*# sourceMappingURL=MyProfile.css.map */

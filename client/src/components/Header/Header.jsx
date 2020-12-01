@@ -51,7 +51,9 @@ const Header = (props) => {
                 Sign Out
               </li>
               <li>
-                <Avatar />
+                <Link to="/my-profile">
+                  <Avatar />
+                </Link>
               </li>
             </React.Fragment>
           ) : (
