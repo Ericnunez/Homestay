@@ -11,6 +11,9 @@ import reducers from "./store/reducers";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
+window.documentTitle = "Homestay";
+document.title = window.documentTitle;
+
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
