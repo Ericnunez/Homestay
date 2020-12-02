@@ -26,7 +26,6 @@ export const createUser = async (req, res) => {
     const hashPassword = await bcrypt.hash(req.body.password, salt);
 
     const newUser = new User({
-      displayName: req.body.displayName,
       email: req.body.email,
       password: hashPassword,
       profile: req.body.profile,
@@ -35,7 +34,7 @@ export const createUser = async (req, res) => {
     const token = jwt.sign(
       {
         _id: newUser._id,
-        displayName: newUser.displayName,
+        displayName: newUser.profile.displayName,
         email: newUser.email,
       },
       process.env.SECRET_TOKEN
@@ -68,7 +67,7 @@ export const loginUser = async (req, res) => {
     const token = jwt.sign(
       {
         _id: user._id,
-        displayName: user.displayName,
+        displayName: user.profile.displayName,
         email: user.email,
       },
       process.env.SECRET_TOKEN

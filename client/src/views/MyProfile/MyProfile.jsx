@@ -9,6 +9,7 @@ import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -85,6 +86,7 @@ function SimpleTabs() {
 }
 
 const MyProfile = () => {
+  const user = useSelector((state) => state.user);
   const classes = useStyles();
 
   useEffect(() => {
@@ -104,7 +106,7 @@ const MyProfile = () => {
             }}
             alt="profile picture"
           />
-          <Typography variant="h4">Eric Nunez</Typography>
+          <Typography variant="h4">{user && user.displayName}</Typography>
           <Typography variant="h6" gutterBottom>
             Member Since 2020
           </Typography>
