@@ -38,13 +38,24 @@ export default function LoginModal(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errors = validate(registerSchema, { email, password, displayName });
+    const profile = { displayName: displayName };
+    const errors = validate(registerSchema, {
+      email,
+      password,
+      displayName,
+      profile,
+    });
     if (errors) {
       setErrors(errors);
       return;
     }
     try {
-      const { data } = await api.register({ displayName, email, password });
+      const { data } = await api.register({
+        displayName,
+        email,
+        password,
+        profile,
+      });
       dispatch(register(data));
       props.onClose();
     } catch (error) {
@@ -82,13 +93,16 @@ export default function LoginModal(props) {
       })
       .label("Email"),
     password: Joi.string().min(5).max(20).required(),
+    profile: Joi.object().required(),
   };
 
   return (
     <div>
       <Dialog {...props} aria-labelledby="form-dialog-title">
         <form>
-          <DialogTitle id="form-dialog-title">Login</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            {props.modalversion === "register" ? "Register" : "Login"}
+          </DialogTitle>
           <DialogContent>
             {errors.api && <Alert severity="error">{errors.api}</Alert>}
             {props.modalversion === "register" && (

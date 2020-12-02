@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema(
   {
-    displayName: String,
     email: String,
     password: String,
+    profile: {},
   },
   {
     timestamps: true,

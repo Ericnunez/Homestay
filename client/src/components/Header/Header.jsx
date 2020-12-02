@@ -31,11 +31,14 @@ const Header = (props) => {
 
   return (
     <header className="header">
-      <LoginModal
-        open={open}
-        onClose={handleClose}
-        modalversion={modalVersion}
-      />
+      {open && (
+        <LoginModal
+          open={open}
+          onClose={handleClose}
+          modalversion={modalVersion}
+        />
+      )}
+
       <Link to="/">
         <img className="header-icon" src={logo} alt="logo" />
       </Link>
