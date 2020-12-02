@@ -37,7 +37,11 @@ export const createUser = async (req, res) => {
         displayName: newUser.profile.displayName,
         email: newUser.email,
       },
-      process.env.SECRET_TOKEN
+      process.env.SECRET_TOKEN,
+      {
+        expiresIn: "30d",
+        issuer: "Homestay",
+      }
     );
     res.status(201).json(token);
   } catch (error) {
@@ -70,7 +74,11 @@ export const loginUser = async (req, res) => {
         displayName: user.profile.displayName,
         email: user.email,
       },
-      process.env.SECRET_TOKEN
+      process.env.SECRET_TOKEN,
+      {
+        expiresIn: "30d",
+        issuer: "Homestay",
+      }
     );
     // const { _id: userId, displayName: name, email: email } = user;
     return res.send(token);

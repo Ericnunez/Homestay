@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MyProfile.css";
 import { Container } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
@@ -8,7 +8,8 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import { useEffect } from "react";
+import moment from "moment";
+
 import { useSelector } from "react-redux";
 
 function TabPanel(props) {
@@ -85,7 +86,7 @@ function SimpleTabs() {
   );
 }
 
-const MyProfile = () => {
+export default function MyProfile() {
   const user = useSelector((state) => state.user);
   const classes = useStyles();
 
@@ -108,13 +109,15 @@ const MyProfile = () => {
           />
           <Typography variant="h4">{user && user.displayName}</Typography>
           <Typography variant="h6" gutterBottom>
-            Member Since 2020
+            {/* TODO: add the created date here */}
+            Host Since {moment.unix(user.iat).fromNow()}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            User Bio should be here. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Corporis ipsam ullam, ducimus quaerat vero totam
-            provident nesciunt ad laboriosam illo voluptatem adipisci eaque?
-            Tenetur, explicabo? Perferendis qui molestias incidunt nobis.
+            User Bio should be here.
+          </Typography>
+          <Typography variant="caption" gutterBottom>
+            {/* Add the last updated time here */}
+            Last Updated: {moment.unix(user.iat).fromNow()}
           </Typography>
           <div />
           <div>
@@ -142,6 +145,4 @@ const MyProfile = () => {
       </div>
     </Container>
   );
-};
-
-export default MyProfile;
+}
