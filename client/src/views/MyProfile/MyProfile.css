@@ -2,6 +2,7 @@
   display: -ms-grid;
   display: grid;
   gap: 2rem;
+  min-height: 80vh;
 }
 
 @media only screen and (min-width: 700px) {
@@ -17,5 +18,18 @@
 
 .profile-form {
   margin-bottom: 1rem;
+}
+
+.profile-about {
+  margin-bottom: 1rem;
+}
+
+.profile-form-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 /*# sourceMappingURL=MyProfile.css.map */

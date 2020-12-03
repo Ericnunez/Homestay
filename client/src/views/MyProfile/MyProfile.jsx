@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./MyProfile.css";
+import { getUserProfile } from "../../api";
 import { Button, Container } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +15,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import moment from "moment";
 
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -92,8 +94,28 @@ export default function MyProfile() {
   const user = useSelector((state) => state.user);
   const classes = useStyles();
 
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+
+  const handleEditProfile = (event) => {
+    event.preventDefault();
+    setShowEditForm(!showEditForm);
+  };
+
   useEffect(() => {
     document.title = `${document.title} - My Profile`;
+
+    const getProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const data = { id: user._id };
+        const profile = await getUserProfile(data, token);
+        setUserProfile(profile.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProfile();
   }, []);
   return (
     <Container maxWidth="lg">
@@ -108,66 +130,90 @@ export default function MyProfile() {
                 display: "block",
                 margin: "auto",
               }}
-              alt="profile "
+              alt="profile"
             />
-            <Typography variant="h5">{user && user.displayName}</Typography>
+            <Typography variant="h5">
+              {userProfile && userProfile.displayName}
+            </Typography>
             <Typography variant="h6" gutterBottom>
               {/* TODO: add the created date here */}
               Host Since {moment.unix(user.iat).fromNow()}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {user && user.bio}
+              {userProfile && userProfile.bio}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {user && user.location}
+              {userProfile && userProfile.location}
             </Typography>
             <Typography variant="body1" gutterBottom>
-              {user && user.somthing}
+              {userProfile && userProfile.somthing}
             </Typography>
-            <Button variant="contained" fullWidth={true}>
-              Edit Profile
-            </Button>
+
+            {showEditForm ? (
+              <div className="profile-form">
+                <form>
+                  <TextField
+                    id="bio"
+                    label="Bio"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="dense"
+                  />
+                  <TextField
+                    id="displayName"
+                    label="Display Name"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="dense"
+                  />
+                  <TextField
+                    id="location"
+                    label="Location"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="dense"
+                  />
+                  <div className="profile-form-buttons">
+                    {" "}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowEditForm(!showEditForm);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth={true}
+                onClick={(e) => handleEditProfile(e)}
+              >
+                Edit Profile
+              </Button>
+            )}
             <Typography variant="caption" gutterBottom>
               {/* Add the last updated time here */}
               Last Updated: {moment.unix(user.iat).fromNow()}
             </Typography>
-            <div className="profile-form">
-              <form>
-                <TextField
-                  id="bio"
-                  label="Bio"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  margin="dense"
-                />
-                <TextField
-                  id="displayName"
-                  label="Display Name"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  margin="dense"
-                />
-                <TextField
-                  id="location"
-                  label="Location"
-                  variant="outlined"
-                  size="small"
-                  fullWidth
-                  margin="dense"
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  startIcon={<SaveIcon />}
-                  fullWidth
-                >
-                  Save
-                </Button>
-              </form>
-            </div>
           </div>
           <div>
             <Paper className={classes.infoShared} variant="outlined" square>

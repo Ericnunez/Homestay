@@ -1,6 +1,7 @@
 .profile-grid {
   display: grid;
   gap: 2rem;
+  min-height: 80vh;
 }
 @media only screen and (min-width: 700px) {
   .profile-grid {
@@ -14,4 +15,11 @@
 }
 .profile-form {
   margin-bottom: 1rem;
+}
+.profile-about {
+  margin-bottom: 1rem;
+}
+.profile-form-buttons {
+  display: flex;
+  justify-content: space-between;
 }
