@@ -12,6 +12,7 @@ export const deleteListing = (id) => axios.delete(`${url}/${id}`);
 // authentication
 const loginUrl = "/auth/login";
 const registerUrl = "/auth/register";
+const usersUrl = "/users";
 
 // export const login = (user) => axios.post(`${url}${auth}`, user);
 export const register = (user) => {
@@ -29,5 +30,14 @@ export const login = (user) => {
     headers: { "Content-type": "application/json" },
     url: `${url}${loginUrl}`,
     data: user,
+  });
+};
+
+export const getUserProfile = (data, token) => {
+  return axios({
+    method: "post",
+    headers: { "Content-type": "application/json", "x-auth-token": token },
+    url: `${url}${usersUrl}/getUserProfile`,
+    data: data,
   });
 };

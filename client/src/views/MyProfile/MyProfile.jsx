@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MyProfile.css";
-import { Container } from "@material-ui/core";
+import { getUserProfile } from "../../api";
+import { Button, Container } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,7 +9,13 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
-import { useEffect } from "react";
+import TextField from "@material-ui/core/TextField";
+import SaveIcon from "@material-ui/icons/Save";
+
+import moment from "moment";
+
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -62,7 +69,6 @@ function SimpleTabs() {
         <Tabs
           value={value}
           onChange={handleChange}
-          centered
           variant="scrollable"
           scrollButtons="on"
         >
@@ -84,37 +90,131 @@ function SimpleTabs() {
   );
 }
 
-const MyProfile = () => {
+export default function MyProfile() {
+  const user = useSelector((state) => state.user);
   const classes = useStyles();
+
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
+
+  const handleEditProfile = (event) => {
+    event.preventDefault();
+    setShowEditForm(!showEditForm);
+  };
 
   useEffect(() => {
     document.title = `${document.title} - My Profile`;
+
+    const getProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const data = { id: user._id };
+        const profile = await getUserProfile(data, token);
+        setUserProfile(profile.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProfile();
   }, []);
   return (
     <Container maxWidth="lg">
       <div className="profile-grid">
-        <div>
-          <img
-            src="https://images.generated.photos/OqwVUrpxLkilztMbpAcB8EyBtynia4yL7I9J1ZH-0lI/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA1MzQ5MTQuanBn.jpg"
-            style={{
-              borderRadius: "50%",
-              height: "200px",
-              display: "block",
-              margin: "auto",
-            }}
-            alt="profile picture"
-          />
-          <Typography variant="h4">Eric Nunez</Typography>
-          <Typography variant="h6" gutterBottom>
-            Member Since 2020
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            User Bio should be here. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Corporis ipsam ullam, ducimus quaerat vero totam
-            provident nesciunt ad laboriosam illo voluptatem adipisci eaque?
-            Tenetur, explicabo? Perferendis qui molestias incidunt nobis.
-          </Typography>
-          <div />
+        <aside>
+          <div className="profile-about">
+            <img
+              src="https://images.generated.photos/OqwVUrpxLkilztMbpAcB8EyBtynia4yL7I9J1ZH-0lI/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA1MzQ5MTQuanBn.jpg"
+              style={{
+                borderRadius: "50%",
+                height: "150px",
+                display: "block",
+                margin: "auto",
+              }}
+              alt="profile"
+            />
+            <Typography variant="h5">
+              {userProfile && userProfile.displayName}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              {/* TODO: add the created date here */}
+              Host Since {moment.unix(user.iat).fromNow()}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {userProfile && userProfile.bio}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {userProfile && userProfile.location}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {userProfile && userProfile.somthing}
+            </Typography>
+
+            {showEditForm ? (
+              <div className="profile-form">
+                <form>
+                  <TextField
+                    id="bio"
+                    label="Bio"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="dense"
+                  />
+                  <TextField
+                    id="displayName"
+                    label="Display Name"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="dense"
+                  />
+                  <TextField
+                    id="location"
+                    label="Location"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    margin="dense"
+                  />
+                  <div className="profile-form-buttons">
+                    {" "}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      size="small"
+                      startIcon={<SaveIcon />}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowEditForm(!showEditForm);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </form>
+              </div>
+            ) : (
+              <Button
+                variant="contained"
+                fullWidth={true}
+                onClick={(e) => handleEditProfile(e)}
+              >
+                Edit Profile
+              </Button>
+            )}
+            <Typography variant="caption" gutterBottom>
+              {/* Add the last updated time here */}
+              Last Updated: {moment.unix(user.iat).fromNow()}
+            </Typography>
+          </div>
           <div>
             <Paper className={classes.infoShared} variant="outlined" square>
               <AccountBoxIcon style={{ fontSize: 30 }} />
@@ -127,19 +227,11 @@ const MyProfile = () => {
               </Typography>
             </Paper>
           </div>
-        </div>
+        </aside>
         <div>
           <SimpleTabs />
-          <Typography variant="body1" gutterBottom>
-            User Bio should be here. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Corporis ipsam ullam, ducimus quaerat vero totam
-            provident nesciunt ad laboriosam illo voluptatem adipisci eaque?
-            Tenetur, explicabo? Perferendis qui molestias incidunt nobis.
-          </Typography>
         </div>
       </div>
     </Container>
   );
-};
-
-export default MyProfile;
+}
