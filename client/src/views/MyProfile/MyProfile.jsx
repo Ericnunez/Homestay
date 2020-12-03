@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./MyProfile.css";
-import { Container } from "@material-ui/core";
+import { Button, Container } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
@@ -8,6 +8,9 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import TextField from "@material-ui/core/TextField";
+import SaveIcon from "@material-ui/icons/Save";
+
 import moment from "moment";
 
 import { useSelector } from "react-redux";
@@ -64,7 +67,6 @@ function SimpleTabs() {
         <Tabs
           value={value}
           onChange={handleChange}
-          centered
           variant="scrollable"
           scrollButtons="on"
         >
@@ -96,30 +98,77 @@ export default function MyProfile() {
   return (
     <Container maxWidth="lg">
       <div className="profile-grid">
-        <div>
-          <img
-            src="https://images.generated.photos/OqwVUrpxLkilztMbpAcB8EyBtynia4yL7I9J1ZH-0lI/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA1MzQ5MTQuanBn.jpg"
-            style={{
-              borderRadius: "50%",
-              height: "200px",
-              display: "block",
-              margin: "auto",
-            }}
-            alt="profile picture"
-          />
-          <Typography variant="h4">{user && user.displayName}</Typography>
-          <Typography variant="h6" gutterBottom>
-            {/* TODO: add the created date here */}
-            Host Since {moment.unix(user.iat).fromNow()}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            User Bio should be here.
-          </Typography>
-          <Typography variant="caption" gutterBottom>
-            {/* Add the last updated time here */}
-            Last Updated: {moment.unix(user.iat).fromNow()}
-          </Typography>
-          <div />
+        <aside>
+          <div className="profile-about">
+            <img
+              src="https://images.generated.photos/OqwVUrpxLkilztMbpAcB8EyBtynia4yL7I9J1ZH-0lI/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA1MzQ5MTQuanBn.jpg"
+              style={{
+                borderRadius: "50%",
+                height: "150px",
+                display: "block",
+                margin: "auto",
+              }}
+              alt="profile "
+            />
+            <Typography variant="h5">{user && user.displayName}</Typography>
+            <Typography variant="h6" gutterBottom>
+              {/* TODO: add the created date here */}
+              Host Since {moment.unix(user.iat).fromNow()}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {user && user.bio}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {user && user.location}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              {user && user.somthing}
+            </Typography>
+            <Button variant="contained" fullWidth={true}>
+              Edit Profile
+            </Button>
+            <Typography variant="caption" gutterBottom>
+              {/* Add the last updated time here */}
+              Last Updated: {moment.unix(user.iat).fromNow()}
+            </Typography>
+            <div className="profile-form">
+              <form>
+                <TextField
+                  id="bio"
+                  label="Bio"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  margin="dense"
+                />
+                <TextField
+                  id="displayName"
+                  label="Display Name"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  margin="dense"
+                />
+                <TextField
+                  id="location"
+                  label="Location"
+                  variant="outlined"
+                  size="small"
+                  fullWidth
+                  margin="dense"
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  startIcon={<SaveIcon />}
+                  fullWidth
+                >
+                  Save
+                </Button>
+              </form>
+            </div>
+          </div>
           <div>
             <Paper className={classes.infoShared} variant="outlined" square>
               <AccountBoxIcon style={{ fontSize: 30 }} />
@@ -132,15 +181,9 @@ export default function MyProfile() {
               </Typography>
             </Paper>
           </div>
-        </div>
+        </aside>
         <div>
           <SimpleTabs />
-          <Typography variant="body1" gutterBottom>
-            User Bio should be here. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Corporis ipsam ullam, ducimus quaerat vero totam
-            provident nesciunt ad laboriosam illo voluptatem adipisci eaque?
-            Tenetur, explicabo? Perferendis qui molestias incidunt nobis.
-          </Typography>
         </div>
       </div>
     </Container>

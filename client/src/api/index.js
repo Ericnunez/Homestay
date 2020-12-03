@@ -31,3 +31,12 @@ export const login = (user) => {
     data: user,
   });
 };
+
+export const getUserProfile = (token) => {
+  return axios({
+    method: "post",
+    headers: { "Content-type": "application/json" },
+    url: ``,
+    data: token,
+  });
+};
