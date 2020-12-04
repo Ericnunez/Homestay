@@ -41,3 +41,12 @@ export const getUserProfile = (data, token) => {
     data: data,
   });
 };
+
+export const updateUserProfile = (data, token) => {
+  return axios({
+    method: "post",
+    headers: { "Content-type": "application/json", "x-auth-token": token },
+    url: `${url}${usersUrl}/updateUserProfile`,
+    data: data,
+  });
+};
