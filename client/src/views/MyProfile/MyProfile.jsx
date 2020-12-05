@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "./MyProfile.css";
-import { getUserProfile } from "../../api";
+import { getUserProfile, updateUserProfile } from "../../api";
+import { useHistory } from "react-router-dom";
 import { Button, Container } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -92,23 +93,20 @@ function SimpleTabs() {
 
 export default function MyProfile() {
   const user = useSelector((state) => state.user);
+  const history = useHistory();
   const classes = useStyles();
 
   const [showEditForm, setShowEditForm] = useState(false);
   const [userProfile, setUserProfile] = useState({});
-
-  const handleEditProfile = (event) => {
-    event.preventDefault();
-    setShowEditForm(!showEditForm);
-  };
+  const [editData, setEditData] = useState({});
 
   useEffect(() => {
     document.title = `${document.title} - My Profile`;
-
+    const data = { id: user._id };
     const getProfile = async () => {
       try {
         const token = localStorage.getItem("token");
-        const data = { id: user._id };
+
         const profile = await getUserProfile(data, token);
         setUserProfile(profile.data);
       } catch (error) {
@@ -117,6 +115,30 @@ export default function MyProfile() {
     };
     getProfile();
   }, []);
+
+  const handleEditProfile = (event) => {
+    event.preventDefault();
+    setShowEditForm(!showEditForm);
+  };
+
+  const handleChange = ({ currentTarget: input }) => {
+    const update = { ...editData };
+    update[input.id] = input.value;
+    setEditData(update);
+  };
+
+  const handleProfileSave = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await updateUserProfile(editData, token);
+
+      history.push({ pathname: "/empty" });
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Container maxWidth="lg">
       <div className="profile-grid">
@@ -153,6 +175,9 @@ export default function MyProfile() {
               <div className="profile-form">
                 <form>
                   <TextField
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     id="bio"
                     label="Bio"
                     variant="outlined"
@@ -161,6 +186,9 @@ export default function MyProfile() {
                     margin="dense"
                   />
                   <TextField
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     id="displayName"
                     label="Display Name"
                     variant="outlined"
@@ -169,6 +197,9 @@ export default function MyProfile() {
                     margin="dense"
                   />
                   <TextField
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     id="location"
                     label="Location"
                     variant="outlined"
@@ -179,6 +210,10 @@ export default function MyProfile() {
                   <div className="profile-form-buttons">
                     {" "}
                     <Button
+                      onClick={(e) => {
+                        handleChange(e);
+                        handleProfileSave();
+                      }}
                       variant="contained"
                       color="primary"
                       size="small"
@@ -194,6 +229,7 @@ export default function MyProfile() {
                       onClick={(e) => {
                         e.preventDefault();
                         setShowEditForm(!showEditForm);
+                        setEditData({});
                       }}
                     >
                       Cancel
